@@ -22,7 +22,7 @@ import {
   IconSearch,
 } from "@tabler/icons-react";
 
-const topics = [
+const topics = [ 
   "All",
   "Trump",
   "Fed",
