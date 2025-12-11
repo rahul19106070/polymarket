@@ -1,101 +1,240 @@
-'use client'
+"use client";
 
-import { motion } from 'framer-motion'
-import { TrendingUp, Clock, Droplet, ArrowRight } from 'lucide-react'
-import { format } from 'date-fns'
+import { motion } from "framer-motion";
+import {
+  Paper,
+  Group,
+  Badge,
+  Text,
+  Stack,
+  Progress,
+  Button,
+  Box,
+} from "@mantine/core";
+import {
+  IconTrendingUp,
+  IconClock,
+  IconDroplet,
+  IconArrowRight,
+} from "@tabler/icons-react";
+import { format } from "date-fns";
 
 interface Outcome {
-  label: string
-  probability: number
-  color: string
+  label: string;
+  probability: number;
+  color: string;
 }
 
 interface Market {
-  id: number
-  question: string
-  category: string
-  volume: string
-  outcomes: Outcome[]
-  endDate: string
-  liquidity: string
+  id: number;
+  question: string;
+  category: string;
+  volume: string;
+  outcomes: Outcome[];
+  endDate: string;
+  liquidity: string;
 }
 
 interface MarketCardProps {
-  market: Market
-  viewMode: 'grid' | 'list'
+  market: Market;
+  viewMode: "grid" | "list";
 }
 
 export default function MarketCard({ market, viewMode }: MarketCardProps) {
-  const primaryOutcome = market.outcomes[0]
-  const secondaryOutcome = market.outcomes[1]
+  const primaryOutcome = market.outcomes[0];
+  const secondaryOutcome = market.outcomes[1];
 
-  if (viewMode === 'list') {
+  if (viewMode === "list") {
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="okx-card rounded-xl p-6 transition-all cursor-pointer group"
       >
-        <div className="flex items-start justify-between gap-6">
-          <div className="flex-1">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="px-2 py-1 text-xs font-medium bg-okx-hover text-okx-primary rounded">
-                {market.category}
-              </span>
-              <span className="text-xs text-okx-gray-400 flex items-center gap-1">
-                <Droplet className="w-3 h-3" />
-                {market.liquidity}
-              </span>
-            </div>
-            <h3 className="text-lg font-semibold text-okx-text mb-4 group-hover:text-okx-primary transition-colors">
-              {market.question}
-            </h3>
-            <div className="flex items-center gap-6">
-              <div className="flex-1 space-y-2">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="okx-outcome-badge okx-outcome-badge-primary">
-                    {primaryOutcome.label}
-                  </span>
-                  <span className="okx-probability-badge">
-                    {primaryOutcome.probability}%
-                  </span>
-                </div>
-                <div className="h-2.5 bg-okx-gray-800 rounded-full overflow-hidden">
-                  <div className="h-full bg-okx-primary rounded-full" style={{ width: `${primaryOutcome.probability}%` }} />
-                </div>
-              </div>
-              <div className="flex-1 space-y-2">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="okx-outcome-badge okx-outcome-badge-secondary">
-                    {secondaryOutcome.label}
-                  </span>
-                  <span className="okx-probability-badge">
-                    {secondaryOutcome.probability}%
-                  </span>
-                </div>
-                <div className="h-2.5 bg-okx-gray-800 rounded-full overflow-hidden">
-                  <div className="h-full bg-okx-gray-500 rounded-full" style={{ width: `${secondaryOutcome.probability}%` }} />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="text-right">
-            <div className="mb-2">
-              <p className="text-xs text-okx-gray-400">Volume</p>
-              <p className="text-lg font-bold text-okx-text">{market.volume}</p>
-            </div>
-            <div className="flex items-center gap-1 text-xs text-okx-gray-400 mb-4">
-              <Clock className="w-3 h-3" />
-              <span>{format(new Date(market.endDate), 'MMM d, yyyy')}</span>
-            </div>
-            <button className="okx-primary-button px-4 py-2 text-sm rounded-lg flex items-center gap-2">
-              Trade
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
+        <Paper
+          p="lg"
+          style={{
+            backgroundColor: "#000000",
+            border: "1px solid #1A1A1A",
+            borderRadius: 12,
+            cursor: "pointer",
+            transition: "all 0.2s ease",
+          }}
+          styles={
+            {
+              root: {
+                "&:hover": {
+                  borderColor: "#00FF00 !important",
+                  backgroundColor: "rgba(0, 255, 0, 0.03) !important",
+                },
+              },
+            } as any
+          }
+        >
+          <Group align="flex-start" justify="space-between" wrap="nowrap">
+            <Stack style={{ flex: 1 }} gap="md">
+              <Group gap="md">
+                <Badge
+                  variant="filled"
+                  style={{
+                    backgroundColor: "#1A1A1A",
+                    color: "#00FF00",
+                    fontSize: 12,
+                    fontWeight: 600,
+                  }}
+                >
+                  {market.category}
+                </Badge>
+                <Group gap={4}>
+                  <IconDroplet size={12} style={{ color: "#999999" }} />
+                  <Text size="xs" c="#999999">
+                    {market.liquidity}
+                  </Text>
+                </Group>
+              </Group>
+              <Text
+                size="lg"
+                fw={600}
+                c="#CCCCCC"
+                style={{ transition: "color 0.2s ease" }}
+                styles={
+                  {
+                    root: {
+                      "&:hover": {
+                        color: "#00FF00 !important",
+                      },
+                    },
+                  } as any
+                }
+              >
+                {market.question}
+              </Text>
+              <Group grow align="flex-start">
+                <Stack gap="xs">
+                  <Group justify="space-between" mb={4}>
+                    <Badge
+                      variant="filled"
+                      style={{
+                        backgroundColor: "rgba(0, 255, 0, 0.15)",
+                        color: "#00FF00",
+                        border: "1px solid rgba(0, 255, 0, 0.3)",
+                      }}
+                    >
+                      {primaryOutcome.label}
+                    </Badge>
+                    <Badge
+                      variant="filled"
+                      size="sm"
+                      style={{
+                        backgroundColor: "rgba(0, 255, 0, 0.1)",
+                        color: "#00FF00",
+                        border: "1px solid rgba(0, 255, 0, 0.2)",
+                      }}
+                    >
+                      {primaryOutcome.probability}%
+                    </Badge>
+                  </Group>
+                  <Box
+                    style={{
+                      height: 10,
+                      backgroundColor: "#262626",
+                      borderRadius: 999,
+                      overflow: "hidden",
+                    }}
+                  >
+                    <Box
+                      style={{
+                        height: "100%",
+                        width: `${primaryOutcome.probability}%`,
+                        backgroundColor: "#00FF00",
+                        borderRadius: 999,
+                      }}
+                    />
+                  </Box>
+                </Stack>
+                <Stack gap="xs">
+                  <Group justify="space-between" mb={4}>
+                    <Badge
+                      variant="filled"
+                      style={{
+                        backgroundColor: "rgba(204, 204, 204, 0.1)",
+                        color: "#CCCCCC",
+                        border: "1px solid rgba(204, 204, 204, 0.2)",
+                      }}
+                    >
+                      {secondaryOutcome.label}
+                    </Badge>
+                    <Badge
+                      variant="filled"
+                      size="sm"
+                      style={{
+                        backgroundColor: "rgba(0, 255, 0, 0.1)",
+                        color: "#00FF00",
+                        border: "1px solid rgba(0, 255, 0, 0.2)",
+                      }}
+                    >
+                      {secondaryOutcome.probability}%
+                    </Badge>
+                  </Group>
+                  <Box
+                    style={{
+                      height: 10,
+                      backgroundColor: "#262626",
+                      borderRadius: 999,
+                      overflow: "hidden",
+                    }}
+                  >
+                    <Box
+                      style={{
+                        height: "100%",
+                        width: `${secondaryOutcome.probability}%`,
+                        backgroundColor: "#666666",
+                        borderRadius: 999,
+                      }}
+                    />
+                  </Box>
+                </Stack>
+              </Group>
+            </Stack>
+            <Stack gap="md" align="flex-end" style={{ minWidth: 150 }}>
+              <Box>
+                <Text size="xs" c="#999999" mb={4}>
+                  Volume
+                </Text>
+                <Text size="lg" fw={700} c="#CCCCCC">
+                  {market.volume}
+                </Text>
+              </Box>
+              <Group gap={4}>
+                <IconClock size={12} style={{ color: "#999999" }} />
+                <Text size="xs" c="#999999">
+                  {format(new Date(market.endDate), "MMM d, yyyy")}
+                </Text>
+              </Group>
+              <Button
+                rightSection={<IconArrowRight size={16} />}
+                style={{
+                  backgroundColor: "#00FF00",
+                  color: "#000000",
+                  fontWeight: 600,
+                }}
+                styles={
+                  {
+                    root: {
+                      "&:hover": {
+                        backgroundColor: "#00E600 !important",
+                        boxShadow: "0 0 20px rgba(0, 255, 0, 0.3) !important",
+                      },
+                    },
+                  } as any
+                }
+              >
+                Trade
+              </Button>
+            </Stack>
+          </Group>
+        </Paper>
       </motion.div>
-    )
+    );
   }
 
   return (
@@ -103,76 +242,176 @@ export default function MarketCard({ market, viewMode }: MarketCardProps) {
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       whileHover={{ scale: 1.02, y: -4 }}
-      className="okx-card rounded-xl p-6 transition-all cursor-pointer group"
     >
-      {/* Header */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <span className="px-2 py-1 text-xs font-medium bg-okx-hover text-okx-primary rounded">
-            {market.category}
-          </span>
-          <span className="text-xs text-okx-gray-400 flex items-center gap-1">
-            <Droplet className="w-3 h-3" />
-            {market.liquidity}
-          </span>
-        </div>
-        <TrendingUp className="w-4 h-4 text-okx-primary" />
-      </div>
+      <Paper
+        p="lg"
+        style={{
+          backgroundColor: "#000000",
+          border: "1px solid #1A1A1A",
+          borderRadius: 12,
+          cursor: "pointer",
+          transition: "all 0.2s ease",
+        }}
+        styles={
+          {
+            root: {
+              "&:hover": {
+                borderColor: "#00FF00 !important",
+                backgroundColor: "rgba(0, 255, 0, 0.03) !important",
+              },
+            },
+          } as any
+        }
+      >
+        {/* Header */}
+        <Group justify="space-between" mb="md">
+          <Group gap="xs">
+            <Badge
+              variant="filled"
+              style={{
+                backgroundColor: "#1A1A1A",
+                color: "#00FF00",
+                fontSize: 12,
+                fontWeight: 600,
+              }}
+            >
+              {market.category}
+            </Badge>
+            <Group gap={4}>
+              <IconDroplet size={12} style={{ color: "#999999" }} />
+              <Text size="xs" c="#999999">
+                {market.liquidity}
+              </Text>
+            </Group>
+          </Group>
+          <IconTrendingUp size={16} style={{ color: "#00FF00" }} />
+        </Group>
 
-      {/* Question */}
-      <h3 className="text-lg font-semibold text-okx-text mb-4 line-clamp-2 group-hover:text-okx-primary transition-colors">
-        {market.question}
-      </h3>
+        {/* Question */}
+        <Text
+          size="lg"
+          fw={600}
+          c="#CCCCCC"
+          mb="md"
+          lineClamp={2}
+          style={{ transition: "color 0.2s ease", minHeight: 56 }}
+          styles={
+            {
+              root: {
+                "&:hover": {
+                  color: "#00FF00 !important",
+                },
+              },
+            } as any
+          }
+        >
+          {market.question}
+        </Text>
 
-      {/* Outcomes */}
-      <div className="space-y-3 mb-4">
-        {market.outcomes.map((outcome, idx) => (
-          <div key={idx} className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className={`okx-outcome-badge ${
-                idx === 0 
-                  ? 'okx-outcome-badge-primary' 
-                  : 'okx-outcome-badge-secondary'
-              }`}>
-                {outcome.label}
-              </span>
-              <span className="okx-probability-badge">
-                {outcome.probability}%
-              </span>
-            </div>
-            <div className="relative h-2.5 bg-okx-gray-800 rounded-full overflow-hidden">
+        {/* Outcomes */}
+        <Stack gap="md" mb="md">
+          {market.outcomes.map((outcome, idx) => (
+            <Stack key={idx} gap="xs">
+              <Group justify="space-between">
+                <Badge
+                  variant="filled"
+                  style={{
+                    backgroundColor:
+                      idx === 0
+                        ? "rgba(0, 255, 0, 0.15)"
+                        : "rgba(204, 204, 204, 0.1)",
+                    color: idx === 0 ? "#00FF00" : "#CCCCCC",
+                    border:
+                      idx === 0
+                        ? "1px solid rgba(0, 255, 0, 0.3)"
+                        : "1px solid rgba(204, 204, 204, 0.2)",
+                  }}
+                >
+                  {outcome.label}
+                </Badge>
+                <Badge
+                  variant="filled"
+                  size="sm"
+                  style={{
+                    backgroundColor: "rgba(0, 255, 0, 0.1)",
+                    color: "#00FF00",
+                    border: "1px solid rgba(0, 255, 0, 0.2)",
+                  }}
+                >
+                  {outcome.probability}%
+                </Badge>
+              </Group>
               <motion.div
                 initial={{ width: 0 }}
-                animate={{ width: `${outcome.probability}%` }}
+                animate={{ width: "100%" }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
-                className={`h-full rounded-full ${
-                  idx === 0 
-                    ? 'bg-okx-primary' 
-                    : 'bg-okx-gray-500'
-                }`}
-              />
-            </div>
-          </div>
-        ))}
-      </div>
+              >
+                <Box
+                  style={{
+                    height: 10,
+                    backgroundColor: "#262626",
+                    borderRadius: 999,
+                    overflow: "hidden",
+                  }}
+                >
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${outcome.probability}%` }}
+                    transition={{ duration: 0.5, delay: idx * 0.1 }}
+                    style={{
+                      height: "100%",
+                      backgroundColor: idx === 0 ? "#00FF00" : "#666666",
+                      borderRadius: 999,
+                    }}
+                  />
+                </Box>
+              </motion.div>
+            </Stack>
+          ))}
+        </Stack>
 
-      {/* Footer */}
-      <div className="flex items-center justify-between pt-4 border-t border-okx-border">
-        <div>
-          <p className="text-xs text-okx-gray-400 mb-1">Volume</p>
-          <p className="text-sm font-bold text-okx-text">{market.volume}</p>
-        </div>
-        <div className="text-right">
-          <div className="flex items-center gap-1 text-xs text-okx-gray-400 mb-2">
-            <Clock className="w-3 h-3" />
-            <span>{format(new Date(market.endDate), 'MMM d')}</span>
-          </div>
-          <button className="okx-primary-button px-4 py-2 text-sm rounded-lg">
-            Trade
-          </button>
-        </div>
-      </div>
+        {/* Footer */}
+        <Box pt="md" style={{ borderTop: "1px solid #1A1A1A" }}>
+          <Group justify="space-between">
+            <Box>
+              <Text size="xs" c="#999999" mb={4}>
+                Volume
+              </Text>
+              <Text size="sm" fw={700} c="#CCCCCC">
+                {market.volume}
+              </Text>
+            </Box>
+            <Stack gap="xs" align="flex-end">
+              <Group gap={4}>
+                <IconClock size={12} style={{ color: "#999999" }} />
+                <Text size="xs" c="#999999">
+                  {format(new Date(market.endDate), "MMM d")}
+                </Text>
+              </Group>
+              <Button
+                size="sm"
+                style={{
+                  backgroundColor: "#00FF00",
+                  color: "#000000",
+                  fontWeight: 600,
+                }}
+                styles={
+                  {
+                    root: {
+                      "&:hover": {
+                        backgroundColor: "#00E600 !important",
+                        boxShadow: "0 0 20px rgba(0, 255, 0, 0.3) !important",
+                      },
+                    },
+                  } as any
+                }
+              >
+                Trade
+              </Button>
+            </Stack>
+          </Group>
+        </Box>
+      </Paper>
     </motion.div>
-  )
+  );
 }
-

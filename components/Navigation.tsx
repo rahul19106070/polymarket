@@ -1,109 +1,191 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { Search, Menu, X, TrendingUp, Wallet } from 'lucide-react'
-import WalletConnect from './WalletConnect'
+import { useState } from "react";
+import {
+  TextInput,
+  Group,
+  Box,
+  Burger,
+  Collapse,
+  Stack,
+  Container,
+  Center,
+  UnstyledButton,
+} from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { IconSearch, IconTrendingUp } from "@tabler/icons-react";
+import WalletConnect from "./WalletConnect";
 
 export default function Navigation() {
-  const [searchQuery, setSearchQuery] = useState('')
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("");
+  const [opened, { toggle }] = useDisclosure(false);
 
   return (
-    <nav className="sticky top-0 z-50 bg-okx-background border-b border-okx-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+    <Box
+      component="nav"
+      style={{
+        position: "sticky",
+        top: 0,
+        zIndex: 50,
+        backgroundColor: "#000000",
+        borderBottom: "1px solid #1A1A1A",
+      }}
+    >
+      <Container size="xl" px="md">
+        <Group justify="space-between" h={64}>
           {/* Logo & Brand */}
-          <div className="flex items-center space-x-8">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-okx-primary rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-okx-background" />
-              </div>
-              <span className="text-xl font-bold text-okx-primary">
+          <Group gap="xl">
+            <Group gap="xs">
+              <Center
+                style={{
+                  width: 32,
+                  height: 32,
+                  backgroundColor: "#00FF00",
+                  borderRadius: 8,
+                }}
+              >
+                <IconTrendingUp size={20} style={{ color: "#000000" }} />
+              </Center>
+              <Box
+                component="span"
+                style={{
+                  fontSize: 20,
+                  fontWeight: 700,
+                  color: "#00FF00",
+                }}
+              >
                 PredictX
-              </span>
-            </div>
+              </Box>
+            </Group>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-1">
+            <Group gap={4} visibleFrom="md">
               <NavLink active>Markets</NavLink>
               <NavLink>Dashboard</NavLink>
               <NavLink>Portfolio</NavLink>
               <NavLink>Leaderboard</NavLink>
-            </div>
-          </div>
+            </Group>
+          </Group>
 
           {/* Search Bar */}
-          <div className="hidden lg:flex flex-1 max-w-md mx-8">
-            <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-okx-gray-400" />
-              <input
-                type="text"
-                placeholder="Search markets, topics, events..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="okx-input w-full pl-10 pr-4 py-2 rounded-lg text-sm placeholder-okx-gray-500"
-              />
-            </div>
-          </div>
+          <Box
+            visibleFrom="lg"
+            style={{ flex: 1, maxWidth: 400, marginLeft: 32, marginRight: 32 }}
+          >
+            <TextInput
+              placeholder="Search markets, topics, events..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.currentTarget.value)}
+              leftSection={
+                <IconSearch size={18} style={{ color: "#999999" }} />
+              }
+              style={{
+                backgroundColor: "#000000",
+              }}
+              styles={
+                {
+                  input: {
+                    backgroundColor: "#000000",
+                    border: "1px solid #1A1A1A",
+                    color: "#CCCCCC",
+                    "&:focus": {
+                      borderColor: "#00FF00 !important",
+                      boxShadow: "0 0 0 2px rgba(0, 255, 0, 0.1) !important",
+                    },
+                    "&::placeholder": {
+                      color: "#666666",
+                    },
+                  },
+                } as any
+              }
+            />
+          </Box>
 
           {/* Right Side Actions */}
-          <div className="flex items-center space-x-4">
+          <Group gap="md">
             <WalletConnect />
-            <button
-              className="md:hidden p-2 text-okx-text hover:text-okx-white"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-        </div>
+            <Burger
+              opened={opened}
+              onClick={toggle}
+              hiddenFrom="md"
+              size="sm"
+              color="#CCCCCC"
+            />
+          </Group>
+        </Group>
 
         {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-okx-border">
-            <div className="flex flex-col space-y-2">
-              <NavLink mobile active>Markets</NavLink>
+        <Collapse in={opened}>
+          <Box
+            hiddenFrom="md"
+            pb="md"
+            style={{ borderTop: "1px solid #1A1A1A" }}
+          >
+            <Stack gap="xs" pt="md">
+              <NavLink mobile active>
+                Markets
+              </NavLink>
               <NavLink mobile>Dashboard</NavLink>
               <NavLink mobile>Portfolio</NavLink>
               <NavLink mobile>Leaderboard</NavLink>
-              <div className="pt-2">
-                <input
-                  type="text"
+              <Box pt="sm">
+                <TextInput
                   placeholder="Search markets..."
-                  className="okx-input w-full px-4 py-2 rounded-lg text-sm"
+                  leftSection={<IconSearch size={18} />}
+                  styles={{
+                    input: {
+                      backgroundColor: "#000000",
+                      border: "1px solid #1A1A1A",
+                      color: "#CCCCCC",
+                    },
+                  }}
                 />
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    </nav>
-  )
+              </Box>
+            </Stack>
+          </Box>
+        </Collapse>
+      </Container>
+    </Box>
+  );
 }
 
-function NavLink({ 
-  children, 
-  active = false, 
-  mobile = false 
-}: { 
-  children: React.ReactNode
-  active?: boolean
-  mobile?: boolean 
+function NavLink({
+  children,
+  active = false,
+  mobile = false,
+}: {
+  children: React.ReactNode;
+  active?: boolean;
+  mobile?: boolean;
 }) {
   return (
-    <a
-      href="#"
-      className={`
-        ${mobile ? 'block px-4 py-2' : 'px-4 py-2'}
-        text-sm font-medium transition-colors rounded-lg
-        ${active 
-          ? 'bg-okx-hover text-okx-primary border-l-2 border-okx-primary' 
-          : 'text-okx-text hover:text-okx-primary hover:bg-okx-hover'
-        }
-      `}
+    <UnstyledButton
+      style={{
+        display: mobile ? "block" : "inline-block",
+        padding: "8px 16px",
+        fontSize: 14,
+        fontWeight: 500,
+        borderRadius: 8,
+        transition: "all 0.2s ease",
+        backgroundColor: active ? "#1A1A1A" : "transparent",
+        color: active ? "#00FF00" : "#CCCCCC",
+        borderLeft: active ? "2px solid #00FF00" : "none",
+        width: mobile ? "100%" : "auto",
+        textAlign: "left" as const,
+        ...(mobile && { paddingLeft: 16 }),
+      }}
+      styles={
+        {
+          root: {
+            "&:hover": {
+              color: "#00FF00 !important",
+              backgroundColor: "#1A1A1A !important",
+            },
+          },
+        } as any
+      }
     >
       {children}
-    </a>
-  )
+    </UnstyledButton>
+  );
 }
-
