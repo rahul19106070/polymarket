@@ -6,3 +6,4 @@ export type MantineStyles = Record<string, any>;
 export const createStyles = (styles: MantineStyles): MantineStyles => styles;
 
 
+
