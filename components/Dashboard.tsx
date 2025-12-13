@@ -141,7 +141,7 @@ export default function Dashboard() {
       <Group justify="space-between" wrap="wrap">
         <Box>
           <Title order={1} c="dark.0" mb={8}>
-            Global Markets
+            Global Market
           </Title>
           <Text size="sm" c="dark.1">
             Trade on the world's most important events
