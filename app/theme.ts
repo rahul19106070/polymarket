@@ -6,7 +6,7 @@ const green: MantineColorsTuple = [
   "#99ff99",
   "#66ff66",
   "#33ff33",
-  "#00FF00", // Primary OKX green
+  "#00FF00",
   "#00e600",
   "#00cc00",
   "#00b300",
@@ -45,6 +45,4 @@ export const theme = createTheme({
     xl: "2rem",
   },
 });
-
-
 
