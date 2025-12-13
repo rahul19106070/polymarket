@@ -11,12 +11,17 @@ import {
   SegmentedControl,
   SimpleGrid,
   Stack,
+  useMantineTheme,
 } from "@mantine/core";
 import {
   IconAdjustments,
   IconLayoutGrid,
   IconLayoutList,
 } from "@tabler/icons-react";
+import {
+  getButtonVariantStyles,
+  getSegmentedControlStyles,
+} from "@/lib/buttonStyles";
 
 const mockMarkets = [
   {
@@ -128,16 +133,17 @@ const mockMarkets = [
 export default function Dashboard() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState("volume");
+  const theme = useMantineTheme();
 
   return (
     <Stack gap="xl">
       {/* Header */}
       <Group justify="space-between" wrap="wrap">
         <Box>
-          <Title order={1} c="#CCCCCC" mb={8}>
+          <Title order={1} c="dark.0" mb={8}>
             Global Markets
           </Title>
-          <Text size="sm" c="#999999">
+          <Text size="sm" c="dark.1">
             Trade on the world's most important events
           </Text>
         </Box>
@@ -145,24 +151,8 @@ export default function Dashboard() {
         {/* Controls */}
         <Group gap="md">
           <Button
-            variant="outline"
             leftSection={<IconAdjustments size={16} />}
-            style={{
-              backgroundColor: "transparent",
-              border: "1px solid #1A1A1A",
-              color: "#CCCCCC",
-            }}
-            styles={
-              {
-                root: {
-                  "&:hover": {
-                    backgroundColor: "rgba(0, 255, 0, 0.05) !important",
-                    borderColor: "#00FF00 !important",
-                    color: "#00FF00 !important",
-                  },
-                },
-              } as any
-            }
+            styles={getButtonVariantStyles("secondary", theme) as any}
           >
             Filters
           </Button>
@@ -191,24 +181,7 @@ export default function Dashboard() {
                 ),
               },
             ]}
-            styles={
-              {
-                root: {
-                  backgroundColor: "#000000",
-                  border: "1px solid #1A1A1A",
-                  padding: 4,
-                },
-                indicator: {
-                  backgroundColor: "#1A1A1A",
-                },
-                label: {
-                  color: "#999999",
-                  "&[data-active]": {
-                    color: "#00FF00 !important",
-                  },
-                },
-              } as any
-            }
+            styles={getSegmentedControlStyles(theme) as any}
           />
         </Group>
       </Group>

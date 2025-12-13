@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Stack, UnstyledButton, Group, Text } from "@mantine/core";
+import { Box, Stack, UnstyledButton, Group, Text, useMantineTheme } from "@mantine/core";
 import {
   IconTrendingUp,
   IconFlame,
@@ -27,13 +27,15 @@ const topics = [
 ];
 
 export default function Sidebar() {
+  const theme = useMantineTheme();
+
   return (
     <Box
       component="aside"
       visibleFrom="lg"
       style={{
         width: 240,
-        borderRight: "1px solid #1A1A1A",
+        borderRight: `1px solid ${theme.colors.dark[5]}`,
         height: "calc(100vh - 64px)",
         position: "sticky",
         top: 64,
@@ -47,7 +49,7 @@ export default function Sidebar() {
             <Text
               size="xs"
               fw={700}
-              c="#666666"
+              c="dark.2"
               tt="uppercase"
               style={{
                 letterSpacing: "0.1em",
@@ -73,7 +75,7 @@ export default function Sidebar() {
                       backgroundColor: category.active
                         ? "rgba(0, 255, 0, 0.1)"
                         : "transparent",
-                      color: category.active ? "#00FF00" : "#999999",
+                      color: category.active ? theme.colors.green[5] : theme.colors.dark[1],
                       fontSize: 14,
                       fontWeight: 500,
                       transition: "all 0.2s ease",
@@ -83,16 +85,16 @@ export default function Sidebar() {
                     onMouseEnter={(e) => {
                       e.currentTarget.style.backgroundColor =
                         "rgba(0, 255, 0, 0.05)";
-                      e.currentTarget.style.color = "#00FF00";
+                      e.currentTarget.style.color = theme.colors.green[5];
                     }}
                     onMouseLeave={(e) => {
                       if (!category.active) {
                         e.currentTarget.style.backgroundColor = "transparent";
-                        e.currentTarget.style.color = "#999999";
+                        e.currentTarget.style.color = theme.colors.dark[1];
                       } else {
                         e.currentTarget.style.backgroundColor =
                           "rgba(0, 255, 0, 0.1)";
-                        e.currentTarget.style.color = "#00FF00";
+                        e.currentTarget.style.color = theme.colors.green[5];
                       }
                     }}
                   >
@@ -109,7 +111,7 @@ export default function Sidebar() {
             <Text
               size="xs"
               fw={700}
-              c="#666666"
+              c="dark.2"
               tt="uppercase"
               style={{
                 letterSpacing: "0.1em",
@@ -131,7 +133,7 @@ export default function Sidebar() {
                     alignItems: "center",
                     gap: 12,
                     backgroundColor: "transparent",
-                    color: "#999999",
+                    color: theme.colors.dark[1],
                     fontSize: 14,
                     fontWeight: 500,
                     transition: "all 0.2s ease",
@@ -141,11 +143,11 @@ export default function Sidebar() {
                   onMouseEnter={(e) => {
                     e.currentTarget.style.backgroundColor =
                       "rgba(0, 255, 0, 0.05)";
-                    e.currentTarget.style.color = "#CCCCCC";
+                    e.currentTarget.style.color = theme.colors.dark[0];
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.backgroundColor = "transparent";
-                    e.currentTarget.style.color = "#999999";
+                    e.currentTarget.style.color = theme.colors.dark[1];
                   }}
                 >
                   <Box

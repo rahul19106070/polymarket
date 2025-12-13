@@ -11,24 +11,27 @@ import {
   Container,
   Center,
   UnstyledButton,
+  useMantineTheme,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconSearch, IconTrendingUp } from "@tabler/icons-react";
 import WalletConnect from "./WalletConnect";
+import { getTextInputStyles } from "@/lib/buttonStyles";
 
 export default function Navigation() {
   const [searchQuery, setSearchQuery] = useState("");
   const [opened, { toggle }] = useDisclosure(false);
+  const theme = useMantineTheme();
 
   return (
     <Box
       component="nav"
+      bg="black"
       style={{
         position: "sticky",
         top: 0,
         zIndex: 50,
-        backgroundColor: "#000000",
-        borderBottom: "1px solid #1A1A1A",
+        borderBottom: `1px solid ${theme.colors.dark[5]}`,
       }}
     >
       <Container size="xl" px="md">
@@ -37,21 +40,21 @@ export default function Navigation() {
           <Group gap="xl">
             <Group gap="xs">
               <Center
+                bg="green.5"
                 style={{
                   width: 32,
                   height: 32,
-                  backgroundColor: "#00FF00",
                   borderRadius: 8,
                 }}
               >
-                <IconTrendingUp size={20} style={{ color: "#000000" }} />
+                <IconTrendingUp size={20} color={theme.black} />
               </Center>
               <Box
                 component="span"
+                c="green.5"
                 style={{
                   fontSize: 20,
                   fontWeight: 700,
-                  color: "#00FF00",
                 }}
               >
                 PredictX
@@ -77,27 +80,9 @@ export default function Navigation() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.currentTarget.value)}
               leftSection={
-                <IconSearch size={18} style={{ color: "#999999" }} />
+                <IconSearch size={18} color={theme.colors.dark[1]} />
               }
-              style={{
-                backgroundColor: "#000000",
-              }}
-              styles={
-                {
-                  input: {
-                    backgroundColor: "#000000",
-                    border: "1px solid #1A1A1A",
-                    color: "#CCCCCC",
-                    "&:focus": {
-                      borderColor: "#00FF00 !important",
-                      boxShadow: "0 0 0 2px rgba(0, 255, 0, 0.1) !important",
-                    },
-                    "&::placeholder": {
-                      color: "#666666",
-                    },
-                  },
-                } as any
-              }
+              styles={getTextInputStyles(theme) as any}
             />
           </Box>
 
@@ -109,7 +94,7 @@ export default function Navigation() {
               onClick={toggle}
               hiddenFrom="md"
               size="sm"
-              color="#CCCCCC"
+              color={theme.colors.dark[0]}
             />
           </Group>
         </Group>
@@ -119,7 +104,7 @@ export default function Navigation() {
           <Box
             hiddenFrom="md"
             pb="md"
-            style={{ borderTop: "1px solid #1A1A1A" }}
+            style={{ borderTop: `1px solid ${theme.colors.dark[5]}` }}
           >
             <Stack gap="xs" pt="md">
               <NavLink mobile active>
@@ -132,13 +117,7 @@ export default function Navigation() {
                 <TextInput
                   placeholder="Search markets..."
                   leftSection={<IconSearch size={18} />}
-                  styles={{
-                    input: {
-                      backgroundColor: "#000000",
-                      border: "1px solid #1A1A1A",
-                      color: "#CCCCCC",
-                    },
-                  }}
+                  styles={getTextInputStyles(theme) as any}
                 />
               </Box>
             </Stack>
@@ -158,6 +137,8 @@ function NavLink({
   active?: boolean;
   mobile?: boolean;
 }) {
+  const theme = useMantineTheme();
+
   return (
     <UnstyledButton
       style={{
@@ -167,9 +148,9 @@ function NavLink({
         fontWeight: 500,
         borderRadius: 8,
         transition: "all 0.2s ease",
-        backgroundColor: active ? "#1A1A1A" : "transparent",
-        color: active ? "#00FF00" : "#CCCCCC",
-        borderLeft: active ? "2px solid #00FF00" : "none",
+        backgroundColor: active ? theme.colors.dark[5] : "transparent",
+        color: active ? theme.colors.green[5] : theme.colors.dark[0],
+        borderLeft: active ? `2px solid ${theme.colors.green[5]}` : "none",
         width: mobile ? "100%" : "auto",
         textAlign: "left" as const,
         ...(mobile && { paddingLeft: 16 }),
@@ -178,8 +159,8 @@ function NavLink({
         {
           root: {
             "&:hover": {
-              color: "#00FF00 !important",
-              backgroundColor: "#1A1A1A !important",
+              color: `${theme.colors.green[5]} !important`,
+              backgroundColor: `${theme.colors.dark[5]} !important`,
             },
           },
         } as any
